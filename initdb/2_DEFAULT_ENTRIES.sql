@@ -1,34 +1,61 @@
 Do $$
 
-    DECLARE _STUDENT_1 int := NEXTVAL('students_id_seq');
-    DECLARE _MAJOR_1 int := NEXTVAL('majors_id_seq');
-    DECLARE _COURSE_1 int := NEXTVAL('courses_id_seq');
-
     BEGIN
 
-    INSERT INTO majors (id, name, description) VALUES (_MAJOR_1, 'Informatique', 'Ouaiiis du code partout');
-    INSERT INTO majors (name, description) VALUES ('Construction', 'Beaucoup de béton et des poutres');
-    INSERT INTO majors (name, description) VALUES ('Aéronautique', 'Vive le vent');
-    INSERT INTO majors (name, description) VALUES ('Data', 'Trop cool plein de données à ordonner');
-    INSERT INTO majors (name, description) VALUES ('Energie & Environnement', 'On est full green');
-    INSERT INTO majors (name, description) VALUES ('Management', 'Des managers de qualité');
-    INSERT INTO majors (name, description) VALUES ('Santé', 'On connait tous les os et tous les muscles du corps humain');
-    INSERT INTO majors (name, description) VALUES ('Architecture durable', 'Objectif 0 carbone');
-    INSERT INTO majors (name, description) VALUES ('Design Industriel Durable', 'On resistera à la fin du pétrole');
+    INSERT INTO "User" (name, email, role) VALUES
+                                                   ('Alice', 'alice@example.com', 'admin'),
+                                                   ('Bob', 'bob@example.com', 'player'),
+                                                   ('Charlie', 'charlie@example.com', 'player'),
+                                                   ('Diana', 'diana@example.com', 'player'),
+                                                   ('Ethan', 'ethan@example.com', 'player');
 
-    INSERT INTO students (id, first_name, last_name, birthdate, major_id) VALUES (_STUDENT_1, 'Paul', 'Harrohide', '2002-06-15', _MAJOR_1);
-    INSERT INTO students (first_name, last_name, birthdate, major_id) VALUES ('Jean', 'Bonbeur', '2001-08-21',_MAJOR_1);
-    INSERT INTO students (first_name, last_name, birthdate, major_id) VALUES ('Alain', 'Térieur', '2000-01-11', _MAJOR_1);
+    INSERT INTO Quiz (title, description) VALUES
+                                                  ('Football Quiz', 'Test your general knowledge about football'),
+                                                  ('Basketball Quiz', 'Test your general knowledge about basketball');
 
-    INSERT INTO courses (id, name, hours) VALUES (_COURSE_1, 'Java', 30);
-    INSERT INTO courses (name, hours) VALUES ('German', 30);
-    INSERT INTO courses (name, hours) VALUES ('Internet of Things', 30);
-    INSERT INTO courses (name, hours) VALUES ('Thermodynamic', 30);
-    INSERT INTO courses (name, hours) VALUES ('Anatomy', 30);
-    INSERT INTO courses (name, hours) VALUES ('Maths', 30);
-    INSERT INTO courses (name, hours) VALUES ('Spanish', 30);
-    INSERT INTO courses (name, hours) VALUES ('Lean Management', 30);
-    INSERT INTO student_course (student_id, course_id) VALUES (_STUDENT_1, _COURSE_1);
+    INSERT INTO Question (quiz_id, statement, choices, correct_answer) VALUES
+                                                                               (1, 'Which country won the 2018 FIFA World Cup?', 'France;Brazil;Germany;Argentina', 'France'),
+                                                                               (1, 'Who has won the most Ballon d''Or titles?', 'Cristiano Ronaldo;Lionel Messi;Michel Platini;Ronaldinho', 'Lionel Messi'),
+                                                                               (1, 'Which club has the most UEFA Champions League titles?', 'Real Madrid;AC Milan;Liverpool;Barcelona', 'Real Madrid'),
+                                                                               (1, 'Where was the 2006 FIFA World Cup held?', 'Germany;Italy;South Africa;France', 'Germany'),
+                                                                               (1, 'Which player is nicknamed "El Fenomeno"?', 'Ronaldo Nazario;Ronaldinho;Romario;Kaka', 'Ronaldo Nazario'),
+                                                                               (1, 'Who scored the "Hand of God" goal?', 'Maradona;Pele;Zidane;Platini', 'Maradona'),
+                                                                               (1, 'Which country hosted the first FIFA World Cup in 1930?', 'Brazil;Uruguay;Argentina;Italy', 'Uruguay'),
+                                                                               (1, 'Which African country reached the World Cup quarterfinal in 2010?', 'Ghana;Nigeria;Cameroon;Senegal', 'Ghana'),
+                                                                               (1, 'Who is the all-time top scorer of the UEFA Champions League?', 'Cristiano Ronaldo;Messi;Lewandowski;Raul', 'Cristiano Ronaldo'),
+                                                                               (1, 'Which team won the Premier League in 2021?', 'Manchester City;Chelsea;Liverpool;Manchester United', 'Manchester City');
+
+        -- ==========================
+-- Insert Questions - Basketball Quiz (quiz_id = 2)
+-- ==========================
+        INSERT INTO Question (quiz_id, statement, choices, correct_answer) VALUES
+                                                                               (2, 'Which team won the 2020 NBA Championship?', 'Lakers;Heat;Warriors;Bucks', 'Lakers'),
+                                                                               (2, 'Who is known as "His Airness"?', 'Kobe Bryant;Michael Jordan;LeBron James;Magic Johnson', 'Michael Jordan'),
+                                                                               (2, 'Which country won the first Olympic basketball tournament in 1936?', 'USA;Spain;Argentina;Italy', 'USA'),
+                                                                               (2, 'Which player is called "The King"?', 'Kareem Abdul-Jabbar;Shaquille O''Neal;LeBron James;Kobe Bryant', 'LeBron James'),
+                                                                               (2, 'Which NBA player has the most championship rings?', 'Bill Russell;Michael Jordan;Magic Johnson;Kareem Abdul-Jabbar', 'Bill Russell'),
+                                                                               (2, 'Which team drafted Kobe Bryant in 1996?', 'Lakers;Hornets;Celtics;Bulls', 'Hornets'),
+                                                                               (2, 'Where is the NBA team Toronto Raptors based?', 'New York;Toronto;Vancouver;Montreal', 'Toronto'),
+                                                                               (2, 'Who holds the record for most points in a single NBA game?', 'Wilt Chamberlain;Michael Jordan;LeBron James;Kobe Bryant', 'Wilt Chamberlain'),
+                                                                               (2, 'Which NBA team is nicknamed "The Splash Brothers"?', 'Lakers;Warriors;Bulls;Celtics', 'Warriors'),
+                                                                               (2, 'Who won the NBA MVP award in 2021?', 'Giannis Antetokounmpo;Nikola Jokic;Steph Curry;Joel Embiid', 'Nikola Jokic');
+
+        -- ==========================
+-- Insert Results (Players playing quizzes)
+-- ==========================
+-- Bob plays both quizzes
+        INSERT INTO Result (user_id, quiz_id, score) VALUES (2, 1, 8);
+        INSERT INTO Result (user_id, quiz_id, score) VALUES (2, 2, 7);
+
+-- Charlie plays Football Quiz only
+        INSERT INTO Result (user_id, quiz_id, score) VALUES (3, 1, 6);
+
+-- Diana plays Basketball Quiz only
+        INSERT INTO Result (user_id, quiz_id, score) VALUES (4, 2, 9);
+
+-- Ethan plays both quizzes
+        INSERT INTO Result (user_id, quiz_id, score) VALUES (5, 1, 10);
+        INSERT INTO Result (user_id, quiz_id, score) VALUES (5, 2, 5);
 
     END $$;
 

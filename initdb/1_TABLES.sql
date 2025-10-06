@@ -1,30 +1,45 @@
-create table students
-(
-    id SERIAL PRIMARY KEY,
-    first_name TEXT not null,
-    last_name TEXT not null,
-    birthdate date null,
-    major_id int null,
-    image bytea null
+-- Drop the junction table first (to avoid FK conflicts)
+DROP TABLE IF EXISTS student_course CASCADE;
+
+-- Then drop the base tables
+DROP TABLE IF EXISTS students CASCADE;
+DROP TABLE IF EXISTS majors CASCADE;
+DROP TABLE IF EXISTS courses CASCADE;
+
+CREATE TABLE "User" (
+    user_id SERIAL PRIMARY KEY,
+    name    VARCHAR(100)        NOT NULL,
+    email   VARCHAR(150) UNIQUE NOT NULL,
+    role    VARCHAR(20)         NOT NULL CHECK (role IN ('admin', 'player'))
 );
 
-create table majors
-(
-    id SERIAL PRIMARY KEY,
-    name TEXT not null,
-    description TEXT not null
+CREATE TABLE Quiz (
+    quiz_id SERIAL PRIMARY KEY,
+    title VARCHAR(200) NOT NULL,
+    description TEXT
 );
 
-create table courses
-(
-    id SERIAL PRIMARY KEY,
-    name TEXT not null,
-    hours int not null
+CREATE TABLE Question (
+    question_id SERIAL PRIMARY KEY,
+    quiz_id INT NOT NULL,
+    statement TEXT NOT NULL,
+    choices TEXT,
+    correct_answer VARCHAR(255) NOT NULL,
+    CONSTRAINT fk_question_quiz FOREIGN KEY (quiz_id)
+        REFERENCES Quiz(quiz_id)
+        ON DELETE CASCADE
 );
 
-create table student_course
-(
-    id SERIAL PRIMARY KEY,
-    student_id int not null,
-    course_id int not null
+CREATE TABLE Result (
+    result_id SERIAL PRIMARY KEY,
+    user_id INT NOT NULL,
+    quiz_id INT NOT NULL,
+    score INT NOT NULL,
+    play_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    CONSTRAINT fk_result_user FOREIGN KEY (user_id)
+        REFERENCES "User"(user_id)
+        ON DELETE CASCADE,
+    CONSTRAINT fk_result_quiz FOREIGN KEY (quiz_id)
+        REFERENCES Quiz(quiz_id)
+        ON DELETE CASCADE
 );
