@@ -2,7 +2,7 @@ Do $$
 
     BEGIN
 
-    INSERT INTO "User" (name, email, role) VALUES
+    INSERT INTO "user" (name, email, role) VALUES
                                                    ('Alice', 'alice@example.com', 'admin'),
                                                    ('Bob', 'bob@example.com', 'player'),
                                                    ('Charlie', 'charlie@example.com', 'player'),

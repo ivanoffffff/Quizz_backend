@@ -6,7 +6,7 @@ DROP TABLE IF EXISTS students CASCADE;
 DROP TABLE IF EXISTS majors CASCADE;
 DROP TABLE IF EXISTS courses CASCADE;
 
-CREATE TABLE "User" (
+CREATE TABLE "user" (
     user_id SERIAL PRIMARY KEY,
     name    VARCHAR(100)        NOT NULL,
     email   VARCHAR(150) UNIQUE NOT NULL,
@@ -37,7 +37,7 @@ CREATE TABLE Result (
     score INT NOT NULL,
     play_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     CONSTRAINT fk_result_user FOREIGN KEY (user_id)
-        REFERENCES "User"(user_id)
+        REFERENCES "user"(user_id)
         ON DELETE CASCADE,
     CONSTRAINT fk_result_quiz FOREIGN KEY (quiz_id)
         REFERENCES Quiz(quiz_id)
