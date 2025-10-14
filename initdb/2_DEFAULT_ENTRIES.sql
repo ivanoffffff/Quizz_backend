@@ -9,9 +9,9 @@ Do $$
                                                    ('Diana', 'diana@example.com', 'player'),
                                                    ('Ethan', 'ethan@example.com', 'player');
 
-    INSERT INTO Quiz (title, description) VALUES
-                                                  ('Football Quiz', 'Test your general knowledge about football'),
-                                                  ('Basketball Quiz', 'Test your general knowledge about basketball');
+    INSERT INTO Quiz (title, description, type) VALUES
+                                                  ('Football Quiz', 'Test your general knowledge about football', 'FOOTBALL'),
+                                                  ('Basketball Quiz', 'Test your general knowledge about basketball', 'BASKETBALL');
 
     INSERT INTO Question (quiz_id, statement, choices, correct_answer) VALUES
                                                                                (1, 'Which country won the 2018 FIFA World Cup?', 'France;Brazil;Germany;Argentina', 'France'),

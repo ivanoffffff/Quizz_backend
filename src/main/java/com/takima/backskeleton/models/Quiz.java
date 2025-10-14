@@ -26,6 +26,10 @@ public class Quiz {
     @Column(columnDefinition = "TEXT")
     private String description;
 
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private QuizType type;
+
     @OneToMany(mappedBy = "quiz", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Question> questions = new ArrayList<>();
 
@@ -35,5 +39,11 @@ public class Quiz {
     public Quiz(String title, String description) {
         this.title = title;
         this.description = description;
+    }
+
+    public Quiz(String title, String description, QuizType type) {
+        this.title = title;
+        this.description = description;
+        this.type = type;
     }
 }

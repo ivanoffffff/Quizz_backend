@@ -1,6 +1,7 @@
 package com.takima.backskeleton.DTO;
 
 import com.takima.backskeleton.models.Quiz;
+import com.takima.backskeleton.models.QuizType;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -17,6 +18,7 @@ public class QuizDTO {
     private Long quizId;
     private String title;
     private String description;
+    private QuizType type;
     private List<QuestionDTO> questions;
 
     public static QuizDTO fromEntity(Quiz quiz) {
@@ -24,6 +26,7 @@ public class QuizDTO {
                 quiz.getQuizId(),
                 quiz.getTitle(),
                 quiz.getDescription(),
+                quiz.getType(),
                 quiz.getQuestions() != null
                         ? quiz.getQuestions().stream()
                         .map(QuestionDTO::fromEntity)
@@ -33,7 +36,7 @@ public class QuizDTO {
     }
 
     public Quiz toEntity() {
-        Quiz quiz = new Quiz(this.title, this.description);
+        Quiz quiz = new Quiz(this.title, this.description, this.type);
         quiz.setQuizId(this.quizId);
         return quiz;
     }

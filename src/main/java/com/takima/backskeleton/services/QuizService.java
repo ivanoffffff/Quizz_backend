@@ -42,6 +42,7 @@ public class QuizService {
 
         quiz.setTitle(quizDTO.getTitle());
         quiz.setDescription(quizDTO.getDescription());
+        quiz.setType(quizDTO.getType());
 
         Quiz updatedQuiz = quizRepository.save(quiz);
         return QuizDTO.fromEntity(updatedQuiz);
