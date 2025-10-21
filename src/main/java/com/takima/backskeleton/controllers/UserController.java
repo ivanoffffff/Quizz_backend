@@ -1,6 +1,7 @@
 package com.takima.backskeleton.controllers;
 
 import com.takima.backskeleton.DTO.UserDTO;
+import com.takima.backskeleton.models.User;
 import com.takima.backskeleton.services.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -8,6 +9,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/users")
@@ -25,6 +28,14 @@ public class UserController {
     @GetMapping("/{id}")
     public ResponseEntity<UserDTO> getUserById(@PathVariable Long id) {
         return ResponseEntity.ok(userService.getUserById(id));
+    }
+
+    @PostMapping("/check-admin")
+    public ResponseEntity<Boolean> checkAdmin(@RequestBody Map<String, String> request) {
+        String email = request.get("email");
+        Optional<User> user = userService.findByEmail(email);
+        boolean isAdmin = user.isPresent() && user.get().getRole() == User.Role.admin;
+        return ResponseEntity.ok(isAdmin);
     }
 
     @PostMapping
