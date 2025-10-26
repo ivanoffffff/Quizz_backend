@@ -122,7 +122,7 @@ docker-compose down -v
 
 1. **Cloner le repository**
 ```bash
-git clone [URL_DE_VOTRE_REPO] backend
+git clone https://github.com/ivanoffffff/Quizz_backend
 cd backend
 ```
 
