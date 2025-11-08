@@ -31,6 +31,8 @@ back-skeleton/
 
 ## 🚀 Lancement manuel
 
+Se référer au REAME pour un lancement plus rapide via Docker.
+
 ### Prérequis
 - Java 17 (JDK)
 - Maven 3.8+
