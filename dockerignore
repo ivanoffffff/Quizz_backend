@@ -1,0 +1,50 @@
+# Fichiers Git
+.git
+.gitignore
+.gitattributes
+
+# Documentation
+README.md
+*.md
+
+# Fichiers de configuration IDE
+.idea
+.vscode
+*.iml
+*.ipr
+*.iws
+.settings
+.project
+.classpath
+
+# Fichiers de build Maven
+target/
+!.mvn/wrapper/maven-wrapper.jar
+.mvn/wrapper/maven-wrapper.properties
+
+# Fichiers de logs
+*.log
+logs/
+
+# Fichiers de configuration locaux
+.env
+*.env.local
+*.env.*.local
+
+# Fichiers système
+.DS_Store
+Thumbs.db
+
+# Fichiers temporaires
+*.tmp
+*.bak
+*.swp
+*~
+
+# Docker
+Dockerfile
+docker-compose.yml
+.dockerignore
+
+# Tests
+src/test/

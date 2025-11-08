@@ -1,14 +1,105 @@
-version: '3.1'
 services:
+  # ========================================
+  # SERVICE 1 : Base de données PostgreSQL
+  # ========================================
   database:
-    container_name: api_database
-    image: postgres
-    restart: always
+    container_name: quiz_database
+    image: postgres:15-alpine
+    restart: unless-stopped
     env_file:
       - .env
     environment:
-      POSTGRES_USER : ${DATABASE_USER}
+      POSTGRES_USER: ${DATABASE_USER}
       POSTGRES_PASSWORD: ${DATABASE_PASSWORD}
       POSTGRES_DB: ${DATABASE_NAME}
     ports:
       - "5432:5432"
+    volumes:
+      # Monte les scripts SQL pour initialiser la base de données
+      - ./initdb:/docker-entrypoint-initdb.d
+      # Persiste les données de la base
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - quiz-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DATABASE_USER} -d ${DATABASE_NAME}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # ========================================
+  # SERVICE 2 : Backend Spring Boot
+  # ========================================
+  backend:
+    container_name: quiz_backend
+    build:
+      context: ../back-skeleton
+      dockerfile: Dockerfile
+    # Force la plateforme AMD64 pour compatibilité Mac M1/M2
+    platform: linux/amd64
+    restart: unless-stopped
+    env_file:
+      - .env
+    environment:
+      # Configuration de la base de données
+      DATABASE_NAME: ${DATABASE_NAME}
+      DATABASE_USER: ${DATABASE_USER}
+      DATABASE_PASSWORD: ${DATABASE_PASSWORD}
+      # URL de connexion à la base (utilise le nom du service Docker)
+      SPRING_DATASOURCE_URL: jdbc:postgresql://database:5432/${DATABASE_NAME}
+      SPRING_DATASOURCE_USERNAME: ${DATABASE_USER}
+      SPRING_DATASOURCE_PASSWORD: ${DATABASE_PASSWORD}
+      # Configuration JPA
+      SPRING_JPA_HIBERNATE_DDL_AUTO: none
+      SPRING_JPA_SHOW_SQL: false
+    ports:
+      - "8080:8080"
+    depends_on:
+      database:
+        condition: service_healthy
+    networks:
+      - quiz-network
+    healthcheck:
+      test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost:8080/api/quizzes"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 40s
+
+  # ========================================
+  # SERVICE 3 : Frontend Angular
+  # ========================================
+  frontend:
+    container_name: quiz_frontend
+    build:
+      context: ../front-skeleton
+      dockerfile: Dockerfile
+    # Force la plateforme AMD64 pour compatibilité Mac M1/M2
+    platform: linux/amd64
+    restart: unless-stopped
+    ports:
+      - "4200:80"
+    depends_on:
+      - backend
+    networks:
+      - quiz-network
+    healthcheck:
+      test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost:80"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 20s
+
+# ========================================
+# VOLUMES
+# ========================================
+volumes:
+  postgres_data:
+    driver: local
+
+# ========================================
+# NETWORKS
+# ========================================
+networks:
+  quiz-network:
+    driver: bridge

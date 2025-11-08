@@ -79,9 +79,9 @@ cp .env.sample .env
 Contenu du fichier `.env` :
 ```env
 # Configuration PostgreSQL
-DATABASE_NAME=quiz_db
-DATABASE_USER=postgres
-DATABASE_PASSWORD=postgres123
+DATABASE_NAME=default-database
+DATABASE_USER=root
+DATABASE_PASSWORD=toor
 ```
 
 3. **Démarrer tous les services**
@@ -89,19 +89,28 @@ DATABASE_PASSWORD=postgres123
 docker-compose up -d
 ```
 
-Cette commande va :
+4. **Créer et remplir les tables de la base de données**
+```bash
+docker exec -it quiz_database psql -U root -d default-database
+```
+```bash
+ \i /docker-entrypoint-initdb.d/1_TABLES.sql
+ \i /docker-entrypoint-initdb.d/2_DEFAULT_ENTRIES.sql
+```
+
+Ces commandes vont :
 -  Créer et démarrer le conteneur PostgreSQL
--  Exécuter automatiquement les scripts SQL (`initdb/*.sql`)
+-  Exécuter les scripts SQL (`initdb/*.sql`)
 -  Créer les tables et insérer les données de test
 -  Démarrer l'API Spring Boot sur le port 8080
 
-4. **Vérifier que l'API fonctionne**
+5. **Vérifier que l'API fonctionne**
 
 Ouvrez votre navigateur sur :
 - API : http://localhost:8080/api/quizzes
 - Swagger UI : http://localhost:8080/swagger-ui.html
 
-5. **Arrêter les services**
+6. **Arrêter les services**
 ```bash
 docker-compose down
 ```
