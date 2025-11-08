@@ -56,6 +56,7 @@ backend/
 ##  Installation et démarrage
 
 ### Option 1 : Avec Docker Compose (recommandé)
+Dans cette partie on va démarrer toute l'application.
 
 #### Prérequis
 - Docker
@@ -63,16 +64,22 @@ backend/
 
 #### Étapes
 
-1. **Cloner le repository**
+1. **Cloner les repositories**
+
+Placer les deux dossiers dans un seul et même dossier parent.
+
+```bash
+git clone https://github.com/ivanoffffff/Quizz_frontend
+```
 ```bash
 git clone https://github.com/ivanoffffff/Quizz_backend
-cd backend
 ```
 
 2. **Créer le fichier `.env`**
 
 Copiez le fichier d'exemple et modifiez les valeurs si nécessaire :
 ```bash
+cd backend
 cp .env.sample .env
 ```
 
@@ -86,6 +93,7 @@ DATABASE_PASSWORD=toor
 
 3. **Démarrer tous les services**
 ```bash
+cd backend
 docker-compose up -d
 ```
 
@@ -103,6 +111,7 @@ Ces commandes vont :
 -  Exécuter les scripts SQL (`initdb/*.sql`)
 -  Créer les tables et insérer les données de test
 -  Démarrer l'API Spring Boot sur le port 8080
+-  Démarrer le frontend sur le port 4200
 
 5. **Vérifier que l'API fonctionne**
 
@@ -110,7 +119,13 @@ Ouvrez votre navigateur sur :
 - API : http://localhost:8080/api/quizzes
 - Swagger UI : http://localhost:8080/swagger-ui.html
 
-6. **Arrêter les services**
+6. **Acceder à l'Application**
+
+Ouvrez votre navigateur sur :
+- http://localhost:4200/quiz
+- http://localhost:4200/
+
+7. **Arrêter les services**
 ```bash
 docker-compose down
 ```
@@ -204,6 +219,21 @@ docker-compose up database -d
 4. **Lancer l'application**
     - Exécutez la classe principale : `BackSkeletonApplication.java`
     - L'API démarre sur http://localhost:8080
+  
+##  Accès à l'application
+
+### Users
+Vous pouvez utiliser l'application sans vous connecter. Vous aurez néanmoins besoinde vous connecter pour consulter votre score suite à un quiz.
+Pour accéder à la partie administrateur, il vous faudra utiliser une adresse mail 'admin' déjà présente dans la BDD. Vous pourrez par la suite créer d'autres administrateurs.
+
+#### Players
+- Bob, bob@example.com
+- Charlie, charlie@example.com
+- Diana, diana@example.com
+- Ethan, ethan@example.com
+
+#### Admins
+- Alice, alice@example.com
 
 ##  Base de données
 
